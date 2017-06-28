@@ -42,10 +42,13 @@
     "webpack-dev-server": "2.4.2"
   },
   "dependencies": {
+    "d3-axis": "^1.0.8",
+    "d3-hierarchy": "^1.1.5",
     "history": "^4.6.1",
     "inferno": "^3",
     "inferno-component": "^3",
     "inferno-create-element": "^3",
-    "inferno-router": "^3"
+    "inferno-router": "^3",
+    "moment": "^2.18.1"
   }
 }
