@@ -44,11 +44,15 @@
   "dependencies": {
     "d3-axis": "^1.0.8",
     "d3-hierarchy": "^1.1.5",
+    "d3-layout-timeline": "^1.0.3",
+    "d3-scale": "^1.0.6",
     "history": "^4.6.1",
     "inferno": "^3",
     "inferno-component": "^3",
     "inferno-create-element": "^3",
     "inferno-router": "^3",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "react-radio-group": "^3.0.2",
+    "underscore": "^1.8.3"
   }
 }

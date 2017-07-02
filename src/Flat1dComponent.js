@@ -1,14 +1,16 @@
 import D1Component from './D1Component';
-import {DB} from './data.js'
+import {DB, tym2Ordinal, tym2OrdinalSorter} from './data.js'
 
 export default function Flat1dComponent() {
+
+ const mapped = DB.sort(tym2OrdinalSorter)
+
 	return (
 		<div>
-	  <h2>Flat, 1 dimension</h2>
 			<ul>
-				{ (DB.map(function(lmnt, ndx){
+				{ (mapped.map(function(lmnt, ndx){
 							return (
-								<li key="Flat1dComponent-{lmnt.id}">
+								<li key="Flat2dComponent-{lmnt.id}">
 								 <D1Component lmnt={lmnt} />
 								</li>
 							)

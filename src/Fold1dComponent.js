@@ -1,8 +1,6 @@
-import {stratify} from 'd3-hierarchy';
-
 import D1Component from './D1Component';
 
-import {DB} from './data.js'
+import {stratifiedDB} from './data.js'
 
 function Fold1dRecursiveComponent(root) {
   return (
@@ -19,8 +17,7 @@ function Fold1dRecursiveComponent(root) {
 export default function Fold1dComponent() {
 	return (
 		<div>
-	  <h2>Folded, 1 dimension</h2>
-		 <Fold1dRecursiveComponent data={stratify()(DB)} />
+		 <Fold1dRecursiveComponent data={stratifiedDB} />
 			</div>
 	);
 }
