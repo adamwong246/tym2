@@ -26,6 +26,7 @@ export default function Fold2dComponent2() {
 	return (
 		<div>
 			<svg height={svgHeight} width={svgWidth}>
+   
 			 <Fold2dRecursiveComponent root={stratifiedDB}/>
 			</svg>
 		</div>

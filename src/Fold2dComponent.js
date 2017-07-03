@@ -1,4 +1,6 @@
-import {DB, tym2Time, tym2OrdinalSorter, stratifiedDB} from './data.js'
+import moment from 'moment'
+
+import {tym2Time, stratifiedDB} from './data.js'
 
 const svgHeight = 400;
 const svgWidth = 400;
@@ -26,7 +28,9 @@ export default function Fold2dComponent() {
 	return (
 		<div>
 			<svg height={svgHeight} width={svgWidth}>
+    <rect x="0" y="0" width={svgWidth} height={svgHeight} stroke="red" strokeWidth="2px" fill="lightgray"/>
 			 <Fold2dRecursiveComponent root={stratifiedDB} height={svgHeight}/>
+    <line x1={yScale(moment())} y1="0" x2={yScale(moment())} y2={svgHeight} stroke="red"/>
 			</svg>
 		</div>
 	);
