@@ -11,10 +11,10 @@ export default function Fold(props) {
     <tbody>
      <tr>
      <td>
-      <Fold1dComponent events={events}/>
+      <Fold1dComponent events={events} highlighted={props.highlighted} onHighlight={props.onHighlight}/>
      </td>
      <td>
-      <Fold2dComponent events={events}/>
+      <Fold2dComponent events={events} highlighted={props.highlighted} onHighlight={props.onHighlight} />
      </td>
      </tr>
     </tbody>

@@ -1,10 +1,10 @@
 import moment from 'moment'
 
-import {tym2Time} from './data.js'
+import {tym2Time, svgDimension} from './data.js'
 
 export default function Flat2dComponent(props) {
-	const svgHeight = 400;
-	const svgWidth = 400;
+	const svgHeight = svgDimension;
+	const svgWidth = svgDimension;
 	const rowHeight = svgHeight / props.events.length;
 
  const yScale = tym2Time.range([0, svgWidth])
@@ -12,17 +12,18 @@ export default function Flat2dComponent(props) {
 	return (
 		<div>
 			<svg height={svgHeight} width={svgWidth}>
-    <rect x="0" y="0" width={svgWidth} height={svgHeight} stroke="red" strokeWidth="2px" fill="lightgray"/>
+    <rect x="0" y="0" width={svgWidth} height={svgHeight}fill="lightgray"/>
 			 {
 					props.events.map(function(lmnt, ndx){
 						return (
 							<g>
-							  <rect x={yScale(lmnt.start)} y={ndx*rowHeight} height={rowHeight} width={yScale(lmnt.end) - yScale(lmnt.start)} fillOpacity="0.1" fill="pink" stroke="black"></rect>
+							  <rect x={yScale(lmnt.start)} y={ndx*rowHeight} height={rowHeight} width={yScale(lmnt.end) - yScale(lmnt.start)} fillOpacity={props.highlighted === lmnt.id ? 1 : 0.1} fill="pink" stroke="black" onMouseOver={(e) => props.onHighlight(lmnt.id)} ></rect>
 							</g>
 						)
 					})
 				}
     <line x1={yScale(moment())} y1="0" x2={yScale(moment())} y2={svgHeight} stroke="red"/>
+    <rect x="0" y="0" width={svgWidth} height={svgHeight} stroke="red" strokeWidth="2px" fill="transparent"/>
 			</svg>
 		</div>
 	);
