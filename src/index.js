@@ -12,7 +12,6 @@ import Flat1dComponent from './Flat1dComponent';
 import Flat2dComponent from './Flat2dComponent';
 import Fold1dComponent from './Fold1dComponent';
 import Fold2dComponent from './Fold2dComponent';
-import Fold2dComponent2 from './Fold2dComponent2';
 
 import Flat from './Flat';
 import Fold from './Fold';
@@ -31,7 +30,6 @@ const routes = (
    <Route path="/fold1d" component={ Fold1dComponent } />
    <Route path="/flat2d" component={ Flat2dComponent } />
    <Route path="/fold2d" component={ Fold2dComponent } />
-   <Route path="/fold2d2" component={ Fold2dComponent2 } />
    <Route path="/flat" component={ Flat } />
    <Route path="/fold" component={ Fold } />
 

@@ -11,10 +11,10 @@ export default function Flat(props) {
     <tbody>
      <tr>
      <td>
-      <Flat1dComponent events={events} highlighted={props.highlighted} onHighlight={props.onHighlight}/>
+      <Flat1dComponent events={events} highlighted={props.highlighted} onHighlight={props.onHighlight} onEventClick={props.onEventClick} />
      </td>
      <td>
-      <Flat2dComponent events={events} highlighted={props.highlighted} onHighlight={props.onHighlight}/>
+      <Flat2dComponent events={events} highlighted={props.highlighted} onHighlight={props.onHighlight} onEventClick={props.onEventClick} />
      </td>
      </tr>
     </tbody>

@@ -5,10 +5,10 @@ import {stratifiedDB} from './data.js'
 function Fold1dRecursiveComponent(props) {
   return (
     <div>
-      <D1Component lmnt={props.data.data} onMouseEnter={props.onD1Hover} highlighted={props.highlighted === props.data.data.id}/>
+      <D1Component lmnt={props.events.data} onMouseEnter={props.onD1Hover} highlighted={props.highlighted === props.events.data.id}/>
       <ul>{
-       (props.data.children || []).map(function(lmnt, ndx){
-        return(<li><Fold1dRecursiveComponent data={lmnt} onD1Hover={props.onD1Hover}  highlighted={props.highlighted} /></li>)
+       (props.events.children || []).map(function(lmnt, ndx){
+        return(<li><Fold1dRecursiveComponent events={lmnt} onD1Hover={props.onD1Hover}  highlighted={props.highlighted} /></li>)
        })}</ul>
      </div>
   )
@@ -17,7 +17,7 @@ function Fold1dRecursiveComponent(props) {
 export default function Fold1dComponent(props) {
 	return (
 		<div>
-		 <Fold1dRecursiveComponent data={stratifiedDB} onD1Hover={props.onHighlight} highlighted={props.highlighted}/>
+		 <Fold1dRecursiveComponent events={stratifiedDB} onD1Hover={props.onHighlight} highlighted={props.highlighted}/>
 			</div>
 	);
 }

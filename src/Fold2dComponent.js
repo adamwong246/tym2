@@ -1,9 +1,6 @@
 import moment from 'moment'
 
-import {tym2Time, stratifiedDB, svgDimension} from './data.js'
-
-const svgHeight = svgDimension;
-const svgWidth = svgDimension;
+import {tym2Time, stratifiedDB, svgHeight, svgWidth} from './data.js'
 const yScale = tym2Time.range([0, svgWidth]);
 
 function Fold2dRecursiveComponent(props) {

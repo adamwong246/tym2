@@ -1,10 +1,8 @@
 import moment from 'moment'
 
-import {tym2Time, svgDimension} from './data.js'
+import {tym2Time, svgHeight, svgWidth} from './data.js'
 
 export default function Flat2dComponent(props) {
-	const svgHeight = svgDimension;
-	const svgWidth = svgDimension;
 	const rowHeight = svgHeight / props.events.length;
 
  const yScale = tym2Time.range([0, svgWidth])
@@ -23,7 +21,7 @@ export default function Flat2dComponent(props) {
 					})
 				}
     <line x1={yScale(moment())} y1="0" x2={yScale(moment())} y2={svgHeight} stroke="red"/>
-    <rect x="0" y="0" width={svgWidth} height={svgHeight} stroke="red" strokeWidth="2px" fill="transparent"/>
+    <rect x="0" y="0" width={svgWidth} height={svgHeight} stroke="red" strokeWidth="2" fill="transparent"/>
 			</svg>
 		</div>
 	);

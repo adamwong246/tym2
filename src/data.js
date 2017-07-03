@@ -51,4 +51,5 @@ export const tym2Time = scaleTime()
 
 export const stratifiedDB = stratify()(DB)
 
-export const svgDimension = 500
+export const svgWidth = 800
+export const svgHeight = 550
