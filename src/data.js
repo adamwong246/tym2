@@ -35,8 +35,12 @@ export const tym2OrdinalSorterPriority = (aEvent, bEvent) => {
   const aIsCurrent = (a.start < now && now < a.end) ? 1 : 0
   const bIsCurrent = (b.start < now && now < b.end) ? 1 : 0
 
-  if (aIsCurrent !== bIsCurrent){
-    return bIsCurrent - aIsCurrent
+  if (aIsCurrent && !bIsCurrent){
+    return -1
+  }else if (bIsCurrent && !aIsCurrent){
+    return 1
+  }else if(aIsCurrent && bIsCurrent){
+    return a.end - b.end
   }else{
     const aIsAhead = (a.start > now) ? 1 : 0
     const bIsAhead = (b.start > now) ? 1 : 0
