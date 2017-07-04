@@ -6,8 +6,7 @@ const buffer = 5;
 
 export default function Flat2dComponent(props) {
 	const rowHeight = svgHeight / props.events.length;
-
- const yScale = tym2Time.range([0, svgWidth])
+ const yScale = props.yScale.range([0, svgWidth])
 
 	return (
 		<div>
@@ -15,9 +14,13 @@ export default function Flat2dComponent(props) {
     <rect x="0" y="0" width={svgWidth} height={svgHeight}fill="lightgray"/>
 			 {
 					props.events.map(function(lmnt, ndx){
+      const start = lmnt.data.start;
+      const end = lmnt.data.end;
+						const id = lmnt.data.id;
+
 						return (
 							<g>
-							  <rect x={yScale(lmnt.start)} y={ndx*rowHeight+buffer} height={rowHeight-buffer} width={yScale(lmnt.end) - yScale(lmnt.start)} fillOpacity={props.highlighted === lmnt.id ? 1 : 0.1} fill="pink" stroke="black" onMouseOver={(e) => props.onHighlight(lmnt.id)} ></rect>
+							  <rect x={yScale(start)} y={ndx*rowHeight+buffer} height={rowHeight-buffer} width={yScale(end) - yScale(start)} fillOpacity={props.highlighted === id ? 1 : 0.1} fill="pink" stroke="black" onMouseOver={(e) => props.onHighlight(id)} ></rect>
 							</g>
 						)
 					})
