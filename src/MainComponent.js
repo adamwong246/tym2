@@ -1,4 +1,4 @@
-import Component from 'inferno-component';
+import { Component } from 'react'
 import moment from 'moment'
 import Flat from './Flat';
 import Fold from './Fold';

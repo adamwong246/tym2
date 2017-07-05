@@ -1,11 +1,11 @@
-import Component from 'inferno-component';
+import { Component } from 'react'
 
 // export default function D1Component(props) {
-export default class D1Component extends Component {
+export default class D1Component extends Component{
 
-	render (props) {
+	render () {
 		return (
-		<a style={ {color: props.highlighted ? 'red' : 'black'} } onMouseEnter={(e) => props.onMouseEnter(props.lmnt.data.id)} onClick={(e) => props.onClickEvent(props.lmnt.data.id)} href="#">{props.lmnt.data.id} - {props.lmnt.data.name}</a>
+		<a style={ {color: this.props.highlighted ? 'red' : 'black'} } onMouseEnter={(e) => this.props.onMouseEnter(this.props.lmnt.data.id)} onClick={(e) => this.props.onClickEvent(this.props.lmnt.data.id)} href="#">{this.props.lmnt.data.id} - {this.props.lmnt.data.name}</a>
 	);
 }
 }

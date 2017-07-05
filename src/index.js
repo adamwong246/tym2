@@ -1,8 +1,7 @@
-// inferno module
-import {render} from 'inferno';
+import { render } from 'react-dom';
 
 // routing modules
-import { Router, Route } from 'inferno-router';
+import { Router, Route } from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 // app components
@@ -16,24 +15,11 @@ import Fold2dComponent from './Fold2dComponent';
 import Flat from './Flat';
 import Fold from './Fold';
 
-if (module.hot) {
-    require('inferno-devtools');
-}
-
 const browserHistory = createBrowserHistory();
 
 const routes = (
 	<Router history={ browserHistory }>
-		<Route component={ MyApp }>
 			<Route path="/" component={ MainComponent } />
-   <Route path="/flat1d" component={ Flat1dComponent } />
-   <Route path="/fold1d" component={ Fold1dComponent } />
-   <Route path="/flat2d" component={ Flat2dComponent } />
-   <Route path="/fold2d" component={ Fold2dComponent } />
-   <Route path="/flat" component={ Flat } />
-   <Route path="/fold" component={ Fold } />
-
-		</Route>
 	</Router>
 );
 
