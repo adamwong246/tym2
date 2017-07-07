@@ -12,11 +12,11 @@ function Fold2dRecursiveComponent(props) {
   const yScale = props.yScale;
 
   return (
-    <g>
+    <g key={`Fold2dRecursiveComponent-1-${props.root.data.id}`}>
      <rect x={yScale(node.start)} y={y} height={height-buffer} width={yScale(node.end) - yScale(node.start)} fill="pink" fillOpacity={props.highlight ? 1 : 0.1} stroke="black" onMouseOver={(e) => props.onHighlight(props.root.data.id)}></rect>
-    <g>{
-     (props.root.children || []).map(function(lmnt, ndx2){
-      return(<Fold2dRecursiveComponent root={lmnt} ndx={ndx2} height={(height-buffer) / (props.root.children.length +1 )} highlighted={props.highlighted} highlight={props.highlighted === lmnt.data.id} onHighlight={props.onHighlight} y={y + ((height-buffer) / (props.root.children.length +1 ))} yScale={props.yScale}/>)
+    <g key={`Fold2dRecursiveComponent-2-${props.root.data.id}`}>{
+     (props.root.children || []).map(function(child, ndx2){
+      return(<Fold2dRecursiveComponent  key={`Fold2dRecursiveComponent-3-${child.data.id}`} root={child} ndx={ndx2} height={(height-buffer) / (props.root.children.length +1 )} highlighted={props.highlighted} highlight={props.highlighted === child.data.id} onHighlight={props.onHighlight} y={y + ((height-buffer) / (props.root.children.length +1 ))} yScale={props.yScale}/>)
      })}
 					</g>
 

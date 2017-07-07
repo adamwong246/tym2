@@ -13,14 +13,18 @@ export default function Flat2dComponent(props) {
 			<svg height={svgHeight} width={svgWidth}>
     <rect x="0" y="0" width={svgWidth} height={svgHeight}fill="lightgray"/>
 			 {
-					props.events.map(function(lmnt, ndx){
-      const start = lmnt.data.start;
-      const end = lmnt.data.end;
-						const id = lmnt.data.id;
+					props.events.map(function(event, ndx){
+      const start = event.data.start;
+      const end = event.data.end;
+						const id = event.data.id;
 
 						return (
-							<g>
+							<g key={`Flat2dComponent-g-${event.data.id}`}>
 							  <rect x={yScale(start)} y={ndx*rowHeight+buffer} height={rowHeight-buffer} width={yScale(end) - yScale(start)} fillOpacity={props.highlighted === id ? 1 : 0.1} fill="pink" stroke="black" onMouseOver={(e) => props.onHighlight(id)} ></rect>
+
+									{(event.data.journals || []).map((journal) => {
+										return <circle key={`Flat2dComponent-circle-${journal.id}`} cx={yScale(journal.time)} cy={(ndx*rowHeight)+(rowHeight/2)} r={3} fill="blue"/>
+									})}
 							</g>
 						)
 					})

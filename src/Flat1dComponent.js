@@ -1,19 +1,12 @@
 import Form from "react-jsonschema-form";
-
 import D1Component from './D1Component';
-
-const schema = {
-  title: "Todo",
-  type: "object",
-  required: ["title"],
-  properties: {
-    title: {type: "string", title: "Title", default: "A new task"},
-    done: {type: "boolean", title: "Done?", default: false}
-  }
-};
-
+import {todoSchema} from './data.js'
+import moment from 'moment'
 const log = (type) => console.log.bind(console, type);
 
+const latestJournal = (journals) => {
+
+}
 export default function Flat1dComponent(props) {
  const topEvent = props.events[0];
 
@@ -31,11 +24,20 @@ export default function Flat1dComponent(props) {
 			<span> {topEvent.data.end.toString()}</span>
 			</h4>
 
-   <Form schema={schema}
-           onChange={log("changed")}
-           onSubmit={log("submitted")}
-           onError={log("errors")} />
+			{
+				topEvent.data.formSchema ?
+							<Form schema={topEvent.data.formSchema}
+            formData={(topEvent.data.journals || []).filter((lmnt)=>lmnt.time < moment()).sort((a, b) => b.time - a.time)[0].blob}
+	           onChange={log("changed")}
+	           onSubmit={log("submitted")}
+	           onError={log("errors")} /> : <span></span>
 
+			}
+
+
+   <a href='#' onClick={(e) => {props.setSchemaEditing(topEvent.data.id)}}> edit schema </a>
+   <br></br>
+   <a href='#'>previous edit </a> <a href='#'> later edit</a>
 			<ul>
 				{ (props.events.slice(1).map(function(lmnt, ndx){
 							return (

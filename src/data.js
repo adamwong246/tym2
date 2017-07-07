@@ -2,7 +2,7 @@ import moment from 'moment'
 import {scaleOrdinal} from 'd3-scale';
 import {stratify} from 'd3-hierarchy';
 
-export const DB = [
+export const DbEvents = [
  {id: 0, name: 'saving the day', start: moment().subtract(3, 'hours'), end:moment().add(10, 'hour')},
  {id: 1, name: 'reticulating the splines', start: moment(), end:moment().add(3, 'hour'), parentId:0},
  {id: 2, name: 'squaring the chroma', start: moment().subtract(1, 'hour'), end:moment().add(1, 'hour'), parentId:0},
@@ -16,12 +16,36 @@ export const DB = [
  {id: 10, name: 'lasing the alloys', start: moment().subtract(2.5, 'hours'), end:moment().subtract(2, 'hour'), parentId:0},
  {id: 11, name: 'synchrnozing tachyons', start: moment().add(3.1, 'hours'), end:moment().add(4, 'hour'), parentId:3},
  {id: 12, name: 'compensating for heisenburg uncertainty', start: moment().add(4, 'hours'), end:moment().add(5, 'hour'), parentId:3},
- {id: 13, name: 'deriving the nebula', start: moment().add(5, 'hours'), end:moment().add(6, 'hour'), parentId:3},
+ {id: 13, name: 'deriving the nebula', start: moment().add(5, 'hours'), end:moment().add(6, 'hour'), parentId:3, formSchema: {
+   title: "an auspicious opening",
+   type: "object",
+   properties: {
+     someBoolean: {type: "boolean", title: "a box for checks?"},
+     someString: {type: "string", title: "series of characters"},
+     someNumber: {type: "number", title: "integers and maybe more!"}
+   }},
+   journals: [
+     {id: 0, blob: {
+      someBoolean: true,
+      someNumber: 9,
+      someString: 'foobar'
+    }, time: moment()},
+    {id: 1, blob: {
+     someBoolean: true,
+     someNumber: 8,
+     someString: 'foobarz'
+   }, time: moment().subtract(0.5, 'hours')}
+]
+ }
+]
+
+export const DbJournals = [
+
 ]
 
 export const tym2Ordinal = scaleOrdinal()
-.domain(DB.map(function(lmnt){return lmnt.id}))
-.range(DB.map(function(lmnt){return lmnt.id}))
+.domain(DbEvents.map(function(lmnt){return lmnt.id}))
+.range(DbEvents.map(function(lmnt){return lmnt.id}))
 
 export const tym2OrdinalSorter = (a,b) => {return a.data.id - b.data.id}
 export const tym2OrdinalSorterName = (a,b) => {return a.data.name.localeCompare(b.data.name)}
@@ -56,7 +80,7 @@ export const tym2OrdinalSorterPriority = (aEvent, bEvent) => {
   }
 }
 
-export const stratifiedDB = stratify()(DB)
+export const stratifiedDbEvents = stratify()(DbEvents)
 
 const subtree= (tree, id) => {
     var toReturn;
@@ -69,13 +93,13 @@ const subtree= (tree, id) => {
 }
 
 export const getEvents = (filter) => {
-  var eventsTree = stratifiedDB;
+  var eventsTree = stratifiedDbEvents;
   var subTree;
 
-  if (filter.parentId === null){
+  if (filter.id === null){
     subTree = eventsTree
   } else {
-    subTree = subtree(eventsTree, filter.parentId) || eventsTree
+    subTree = subtree(eventsTree, filter.id) || eventsTree
   }
 
   return subTree
@@ -83,3 +107,12 @@ export const getEvents = (filter) => {
 
 export const svgWidth = 500
 export const svgHeight = 500
+
+export const todoSchema = {
+  title: "",
+  type: "object",
+  required: ["done"],
+  properties: {
+    done: {type: "boolean", title: "Done?", default: false}
+  }
+};
