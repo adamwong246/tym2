@@ -1,4 +1,5 @@
 import D1Component from './D1Component';
+import JournalEditor from './JournalEditor';
 
 function Fold1dRecursiveComponent(props) {
 
@@ -14,8 +15,11 @@ function Fold1dRecursiveComponent(props) {
 }
 
 export default function Fold1dComponent(props) {
+ const topEvent = props.events;
+ // console.log(topEvent)
 	return (
 		<div>
+   <JournalEditor event={topEvent}/>
 		 <Fold1dRecursiveComponent events={props.events} onD1Hover={props.onHighlight} highlighted={props.highlighted} onClickEvent={props.onEventClick}/>
 			</div>
 	);
