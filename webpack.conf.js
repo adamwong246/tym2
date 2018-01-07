@@ -9,10 +9,47 @@ module.exports = {
 	},
 	//devtool: 'source-map',
 	module: {
-		loaders: [{
+		rules: [{
 			test: /\.js$/,
-			loader: 'babel-loader'
-		}]
+			use: 'babel-loader'
+		},
+		// {
+  //       test: /.jsx?$/,
+  //       loader: 'babel-loader',
+  //       exclude: /node_modules/,
+  //       query: {
+  //         presets: ['es2015', 'react']
+  //       }
+  //     },
+      { 
+        test: /\.css$/, 
+        use: ["style-loader", "css-loader"]
+      },
+      { 
+        test: /\.png$/, 
+        use: "url-loader?limit=100000" 
+      },
+      { 
+        test: /\.jpg$/, 
+        use: "file-loader" 
+      },
+      {
+        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, 
+        use: 'url-loader?limit=10000&mimetype=application/font-woff'
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, 
+        use: 'url-loader?limit=10000&mimetype=application/octet-stream'
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, 
+        use: 'file-loader'
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, 
+        use: 'url-loader?limit=10000&mimetype=image/svg+xml'
+      }
+      ]
 	},
 	devServer: {
 		contentBase: './',
