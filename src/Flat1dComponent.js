@@ -26,13 +26,17 @@ export const Flat1dExpanded = (props) => {
 }
 
 
+
+
+
+
 export const Flat1dCondensed = (props) => {
  const groupedEvents = props.groupedEvents
  
  return (
   <div style={{width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto'}} >
    <ul>
-    { (Array.from(groupedEvents)).map(function(a, ndx){
+    { groupedEvents.map(function(a, ndx){
      return (
       <li>
        {a[0]} X {a[1].length}

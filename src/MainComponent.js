@@ -163,31 +163,34 @@ render() {
   filtered: filtered
  }
 
+ // FLAT
  if (this.state.groupingMode === 'flat'){
+  
+  // FLAT AND EXPANDED
   if (this.state.expandedRecurrences){
    const events = eventsTree.descendants().sort(sorter(this.state.sort))
-   
    leftComponent = <Flat1dExpanded {...childProps} events={events} />
    rightComponent = <Flat2dExpanded {...childProps} events={events} xScale={xScale} />
   
-  } else {
-   
-   const groupedEvents = groupBy(eventsTree.descendants(), e => e.data.name)
-
+  // FLAT AND CONDENSED
+  } else { 
+   const groupedEvents = (Array.from(groupBy(eventsTree.descendants(), e => e.data.name)))
    leftComponent = <Flat1dCondensed {...childProps} groupedEvents={groupedEvents} />
    rightComponent = <Flat2dCondensed {...childProps} groupedEvents={groupedEvents} xScale={xScale} />
   }
 
+ // FOLD
  } else {
+
+  // FOLD AND EXPANDED
   if (this.state.expandedRecurrences){
    const events = eventsTree.sort(sorter(this.state.sort))
-
    leftComponent = <Fold1dExpanded {...childProps} events={events} />
    rightComponent = <Fold2dExpanded {...childProps} events={events} xScale={xScale} />
   
+  // FOLD AND CONDENSED
   } else {
-   const groupedEvents = groupBy(eventsTree.descendants(), e => e.data.name)
-   
+   const groupedEvents = groupBy(eventsTree.descendants(), e => e.data.name) 
    leftComponent = <Fold1dCondensed {...childProps} groupedEvents={groupedEvents} />
    // rightComponent = <Fold2dCondensed {...childProps} groupedEvents={groupedEvents} xScale={xScale} />
    // leftComponent = <span> FIXME </span>

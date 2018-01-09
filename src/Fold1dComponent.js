@@ -57,11 +57,11 @@ const Fold1dCondensedRecursive = (props) => {
  return (
   <div key = { `Fold1dCondensedRecursive-div-${props.events.data.id}` } > 
    <D1Component
-    lmnt         = { props.events }
-    onMouseEnter = { props.onD1Hover }
-    highlighted  = { props.highlighted === props.events.data.id }
-    onClickEvent = { props.onClickEvent }
-    filtered     = { props.filtered } />
+    lmnt         = {props.events }
+    onMouseEnter = {props.onD1Hover }
+    highlighted  = {props.highlighted === props.events.data.id }
+    onClickEvent = {props.onClickEvent }
+    filtered     = {props.filtered } />
    <ul> {
     ( props.events.children || [] ).map( function (lmnt, ndx) {
      return ( <li key = {`Fold1dCondensedRecursive-li-${lmnt.data.id}`} >
