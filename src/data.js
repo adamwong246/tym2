@@ -2,8 +2,8 @@ import moment from 'moment'
 import {scaleOrdinal} from 'd3-scale';
 
 export const DbEvents = [
-{id: 0, name: 'root', start: moment().subtract(3, 'hours'), end:moment().add(10, 'hour')},
-{id: 1, name: 'work', start: moment(), end:moment().add(3, 'hour'), parentId:0,
+{id: 0, name: 'life'},
+{id: 1, name: 'work', parentId:0,
 formSchema: {
  "definitions": {
   "Thing": {
@@ -188,9 +188,9 @@ uiFormSchema: {
  }
 },
 },
-{id: 2, name: 'sleep', start: moment().subtract(1, 'hour'), end:moment().add(1, 'hour'), parentId:0},
-{id: 3, name: 'eating', start: moment().add(3, 'hours'), end:moment().add(8, 'hour'), parentId:0},
-{id: 4, name: 'excercising', start: moment().add(1, 'hours'), end:moment().add(6, 'hour'), parentId:0},
+{id: 2, name: 'rest', parentId:0},
+{id: 3, name: 'eating',  parentId:0},
+{id: 4, name: 'excercising', parentId:0},
 {id: 5, name: 'standup', start: moment().add(0.5, 'hours'), end:moment().add(3, 'hour'), parentId:1},
 {id: 6, name: 'meeting', start: moment().add(0.5, 'hours'), end:moment().add(2, 'hour'), parentId:1},
 {id: 7, name: 'my update', start: moment().add(0.75, 'hours'), end:moment().add(1, 'hour'), parentId:5},
@@ -404,14 +404,14 @@ uiFormSchema: {
   return [
    {
     id: Math.floor(Math.random() * Math.floor(Number.MAX_SAFE_INTEGER)),
-    name: 'snooze',
+    name: 'sleep',
     start: moment().add(i, 'days'),
     end: moment().add(i, 'days').add(8, 'hours'),
     parentId: 2
    },
    {
     id: Math.floor(Math.random() * Math.floor(Number.MAX_SAFE_INTEGER)),
-    name: 'snooze',
+    name: 'sleep',
     start: moment().subtract(i, 'days'),
     end: moment().subtract(i, 'days').add(8, 'hours'),
     parentId: 2
@@ -438,29 +438,29 @@ uiFormSchema: {
    {
     id: Math.floor(Math.random() * Math.floor(Number.MAX_SAFE_INTEGER)),
     name: 'lunch',
-    start: moment().add(i, 'days'),
-    end: moment().add(i, 'days').add(8, 'hours'),
+    start: moment().add(i, 'days').add(8, 'hours'),
+    end: moment().add(i, 'days').add(9, 'hours'),
     parentId: 3
    },
    {
     id: Math.floor(Math.random() * Math.floor(Number.MAX_SAFE_INTEGER)),
     name: 'lunch',
-    start: moment().subtract(i, 'days'),
+    start: moment().subtract(i, 'days').add(8, 'hours'),
     end: moment().subtract(i, 'days').add(9, 'hours'),
     parentId: 3
    },
    {
     id: Math.floor(Math.random() * Math.floor(Number.MAX_SAFE_INTEGER)),
     name: 'dinner',
-    start: moment().add(i, 'days'),
+    start: moment().add(i, 'days').add(15, 'hours'),
     end: moment().add(i, 'days').add(16, 'hours'),
     parentId: 3
    },
    {
     id: Math.floor(Math.random() * Math.floor(Number.MAX_SAFE_INTEGER)),
     name: 'dinner',
-    start: moment().subtract(i, 'days'),
-    end: moment().subtract(i, 'days').add(17, 'hours'),
+    start: moment().subtract(i, 'days').add(15, 'hours'),
+    end: moment().subtract(i, 'days').add(16, 'hours'),
     parentId: 3
    }
   ]
@@ -473,7 +473,7 @@ export const tym2Ordinal = scaleOrdinal()
 
 export const tym2OrdinalSorter = (a,b) => {return a.data.id - b.data.id}
 export const tym2OrdinalSorterName = (a,b) => {return a.data.name.localeCompare(b.data.name)}
-export const tym2OrdinalSorterStart = (a,b) => {return a.data.start > b.data.start}
+export const tym2OrdinalSorterStart = (a,b) => {return a.data.start - b.data.start}
 export const tym2OrdinalSorterPriority = (aEvent, bEvent) => {
  let a = aEvent.data;
  let b = bEvent.data;
@@ -483,23 +483,24 @@ export const tym2OrdinalSorterPriority = (aEvent, bEvent) => {
  const aIsCurrent = (a.start < now && now < a.end) ? 1 : 0
  const bIsCurrent = (b.start < now && now < b.end) ? 1 : 0
 
- if (aIsCurrent && !bIsCurrent){
+ if (aIsCurrent && !bIsCurrent) {
   return -1
- }else if (bIsCurrent && !aIsCurrent){
+ } else if ( bIsCurrent && !aIsCurrent ) {
   return 1
- }else if(aIsCurrent && bIsCurrent){
+ } else if ( aIsCurrent && bIsCurrent ) {
   return a.end - b.end
- }else{
+
+ } else {
   const aIsAhead = (a.start > now) ? 1 : 0
   const bIsAhead = (b.start > now) ? 1 : 0
 
-  if(aIsAhead !== bIsAhead){
+  if ( aIsAhead !== bIsAhead ) {
    return bIsAhead - aIsAhead
   } else {
-   const aNearestToNow = Math.max(Math.abs(a.start - now), Math.abs(a.end - now))
-   const bNearestToNow = Math.max(Math.abs(b.start - now), Math.abs(b.end - now))
+   const aNearestToNow = Math.min(Math.abs(a.start - now), Math.abs(a.end - now))
+   const bNearestToNow = Math.min(Math.abs(b.start - now), Math.abs(b.end - now))
+   return aNearestToNow - bNearestToNow 
 
-   return aNearestToNow - bNearestToNow
   }
  }
 }

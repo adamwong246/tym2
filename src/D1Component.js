@@ -16,9 +16,11 @@ constructor(props) {
         style={ {color: this.props.highlighted ? 'red' : 'black'} }
         onMouseEnter={(e) => this.props.onMouseEnter(lmnt.data.id)}
         onClick={(e) => this.props.onClickEvent(lmnt.data.id)}
-        href="#">
-          #{lmnt.data.id} {lmnt.data.name}
+        href="#"
+      > 
+        {lmnt.data.name}
       </a>
+      
       <JournalEditor event={lmnt} 
        filtered={this.props.filtered}
        setFiltered={this.props.onClickEvent}/>

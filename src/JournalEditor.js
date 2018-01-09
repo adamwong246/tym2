@@ -32,7 +32,7 @@ export default class JournalEditor extends Component {
 
     { (props.filtered == event.data.id) &&
      <div>
-      <span>{event.data.start.toString()} - {event.data.end.toString()}</span>
+      <span>{ event.data.start ? event.data.start.toString() : '' } - {event.data.end ? event.data.end.toString() : '' }</span>
       <br></br>
       <a href='#'
        onClick={(e) => this.props.setFiltered(event.data.parentId)}
