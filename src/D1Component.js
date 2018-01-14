@@ -10,15 +10,16 @@ constructor(props) {
 
  render () {
   const lmnt = this.props.lmnt;
+
   return (
     <div>
       <a 
         style={ {color: this.props.highlighted ? 'red' : 'black'} }
-        onMouseEnter={(e) => this.props.onMouseEnter(lmnt.data.id)}
-        onClick={(e) => this.props.onClickEvent(lmnt.data.id)}
+        onMouseEnter={(e) => this.props.onMouseEnter(lmnt.id)}
+        onClick={(e) => this.props.onClickEvent(lmnt.id)}
         href="#"
       > 
-        {lmnt.data.name}
+        {lmnt.name}
       </a>
       
       <JournalEditor event={lmnt} 

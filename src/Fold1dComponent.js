@@ -6,7 +6,7 @@ const Fold1dExpandedRecursive = (props) => {
  return (
   <div key = { `Fold1dExpandedRecursive-${props.events.data.id}` } > 
    <D1Component
-    lmnt         = {props.events}
+    lmnt         = {props.events.data}
     onMouseEnter = {props.onD1Hover}
     highlighted  = {props.highlighted === props.events.data.id}
     onClickEvent = {props.onClickEvent}
@@ -46,31 +46,49 @@ export const Fold1dExpanded = (props) => {
  );
 }
 
-
-
-
-
-
-
-
 const Fold1dCondensedRecursive = (props) => {
  return (
   <div key = { `Fold1dCondensedRecursive-div-${props.events.data.id}` } > 
    <D1Component
-    lmnt         = {props.events }
+    lmnt         = {props.events.data }
     onMouseEnter = {props.onD1Hover }
     highlighted  = {props.highlighted === props.events.data.id }
     onClickEvent = {props.onClickEvent }
     filtered     = {props.filtered } />
+   
+   
    <ul> {
     ( props.events.children || [] ).map( function (lmnt, ndx) {
-     return ( <li key = {`Fold1dCondensedRecursive-li-${lmnt.data.id}`} >
-      <Fold1dCondensedRecursive
-       events       = { lmnt }
-       onD1Hover    = { props.onD1Hover }
-       highlighted  = { props.highlighted }
-       onClickEvent = { props.onClickEvent }
-       filtered     = { props.filtered } />
+     return (
+      <li key = {`Fold1dCondensedRecursive-li-${lmnt.data.id}`} >
+       <Fold1dCondensedRecursive
+        events       = { lmnt }
+        onD1Hover    = { props.onD1Hover }
+        highlighted  = { props.highlighted }
+        onClickEvent = { props.onClickEvent }
+        filtered     = { props.filtered } />
+
+      {lmnt.data.recursions ? <ul> { 
+        Object.keys(lmnt.data.recursions).map((recurssionKey) => {
+         return (
+          <li key = { `Flat1dCondensed-${recurssionKey}-${lmnt.data.id}` } >
+           <div> {lmnt.data.recursions[recurssionKey].length} X </div>
+
+           <D1Component
+            lmnt             = {lmnt.data.recursions[recurssionKey][0]}
+            onMouseEnter     = {props.onHighlight}
+            highlighted      = {props.highlighted === lmnt.id}
+            onClickEvent     = {props.onEventClick}
+            setSchemaEditing = {props.setSchemaEditing}
+            filtered         = {props.filtered}        
+           />
+
+          </li>
+         )
+        }) 
+       } </ul> : <div> </div> }
+
+      
      </li>)
     })
    }</ul>
@@ -79,11 +97,10 @@ const Fold1dCondensedRecursive = (props) => {
 }
 
 export const Fold1dCondensed = (props) => {
- //const topGroupedEvents = props.groupedEvents;
  return (
   <div style={ { width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto' } }> 
    <Fold1dCondensedRecursive
-    groupedEvents = { props.groupedEvents }
+    events = { props.events }
     onD1Hover     = { props.onHighlight }
     highlighted   = { props.highlighted }
     onClickEvent  = { props.onEventClick }

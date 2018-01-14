@@ -1,2 +1,2 @@
-export const svgWidth = 400
-export const svgHeight = 400
+export const svgWidth = 500
+export const svgHeight = 500

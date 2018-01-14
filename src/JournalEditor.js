@@ -17,25 +17,25 @@ export default class JournalEditor extends Component {
  render () {
   const props = this.props
   const event = props.event
-  const schema = event.data.formSchema || todoSchema
-  const uiSchema = event.data.uiFormSchema || todoUiSchema
-  const visSchema = event.data.visFormSchema || todoVisSchema
-  const journal = (event.data.journals || []).filter((lmnt)=>lmnt.time < moment()).sort((a, b) => b.time - a.time)[0]
+  const schema = event.formSchema || todoSchema
+  const uiSchema = event.uiFormSchema || todoUiSchema
+  const visSchema = event.visFormSchema || todoVisSchema
+  const journal = (event.journals || []).filter((lmnt)=>lmnt.time < moment()).sort((a, b) => b.time - a.time)[0]
   const formData = journal ? journal.blob : {}
   
   return (
    <div>
-    { (props.filtered != event.data.id) &&
+    { (props.filtered != event.id) &&
      <div>
      </div>
     }
 
-    { (props.filtered == event.data.id) &&
+    { (props.filtered == event.id) &&
      <div>
-      <span>{ event.data.start ? event.data.start.toString() : '' } - {event.data.end ? event.data.end.toString() : '' }</span>
+      <span>{ event.start ? event.start.toString() : '' } - {event.end ? event.end.toString() : '' }</span>
       <br></br>
       <a href='#'
-       onClick={(e) => this.props.setFiltered(event.data.parentId)}
+       onClick={(e) => this.props.setFiltered(event.parentId)}
       > parent </a>
          
       <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
