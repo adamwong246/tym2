@@ -21,8 +21,8 @@ export default class MainComponent extends Component {
    expandedRecurrences: false,
    filter: {
     id: null,
-    minTime: moment().subtract(1, 'days'),
-    maxTime: moment().add(7, 'days')
+    minTime: DbEvents.reduce((mm,lmnt) => lmnt.end < mm ? lmnt.end : mm, moment()),
+    maxTime: DbEvents.reduce((mm,lmnt) => lmnt.start > mm ? lmnt.start : mm, moment())
    },
    schemaEditing: null,
    DB: DbEvents
@@ -64,12 +64,6 @@ export default class MainComponent extends Component {
  //  return this.setState({ filter: { ...this.state.filter, minTime: computedMinTime, maxTime: computedMaxTime} })
  // }
 
- getEvents = () => {
-
-  
-
- }
-
  render() {
   // console.log(this.state)
 
@@ -89,8 +83,6 @@ export default class MainComponent extends Component {
    onEventClick: setFilteredId, setSchemaEditing: this.setSchemaEditing, schemaEditing: this.state.schemaEditing,
    filtered: filtered
   }
-
-
 
   const groupBy = (list, keyGetter) => {
    const map = new Map();
@@ -139,11 +131,6 @@ export default class MainComponent extends Component {
    const groupedRecursives = Array.from(
     groupBy(recurringEvents, e => {
      return e.recursionParentId + "/" + e.name
-     // return {
-     //  name: e.name,
-     //  recursionParentId: e.recursionParentId
-     // }
-     // return [e.name, e.recursionParentId]
     })
    )
 
@@ -169,7 +156,7 @@ export default class MainComponent extends Component {
   } else {
    eventsPayload =  subtree(eventsTree, filter.id) || eventsTree
   }
-  
+
   // FLAT
   if (this.state.groupingMode === 'flat'){
    
@@ -240,6 +227,9 @@ export default class MainComponent extends Component {
 
      <div className="form-group">
       
+      <button>trim</button>
+      <button>now</button>
+      <br/>
       <label>minTime</label>
       <Datetime className="minTimeSetter"
        onChange={this.setFilteredMinTime}
@@ -253,6 +243,14 @@ export default class MainComponent extends Component {
        isValidDate={(current) => current.isAfter( minTime )} />
 
      </div>
+
+     {/* <div className="form-group">
+      
+      <pre><code>
+       {JSON.stringify(this.state.filter)}
+       </code></pre>
+
+     </div> */}
 
     </form>
 
