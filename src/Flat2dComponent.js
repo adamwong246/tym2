@@ -113,7 +113,7 @@ export const Flat2dCondensed = (props) => {
               height={rowHeightRecursion}
               width={widthRecursion}
               fill="blue"
-              stroke="green"
+              stroke="blue"
              >
               <text> {e.id} </text>
              </rect>

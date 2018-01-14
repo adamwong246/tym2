@@ -13,7 +13,7 @@ export const DbEvents = [
    parentId: 0, name: e.summary,
    start: moment(e.start.dateTime || e.start.date), 
    end: moment(e.end.dateTime || e.end.date),
-   // recursionParentId: e.recurringEventId
+   recursionParentId: e.recurringEventId
   }
  })
 );

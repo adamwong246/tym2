@@ -123,18 +123,28 @@ export default class MainComponent extends Component {
    return true
   });
  
+  const recurringEvents = listOfEvents.filter((e) => e.recursionParentId != null)
+
+  const groupedRecursives = Array.from(
+   groupBy(recurringEvents, e => {
+    return e.recursionParentId
+   })
+  )
+
+  const backfilledEvents = listOfEvents.concat(
+   groupedRecursives.map((gr) => {
+    var toReturn = {};//gr[1][1]
+    toReturn.name = gr[1][1].name
+    toReturn.id = gr[1][1].recursionParentId
+    toReturn.parentId = 0
+    return toReturn
+   })
+  )
+
   var eventsTree;
   if (!state.expandedRecurrences){
 
-   const recurringEvents = listOfEvents.filter((e) => e.recursionParentId != null)
-
-   const groupedRecursives = Array.from(
-    groupBy(recurringEvents, e => {
-     return e.recursionParentId + "/" + e.name
-    })
-   )
-
-   const eventsWithRecurssions = listOfEvents
+   const eventsWithRecurssions = backfilledEvents
    .filter((e) => e.recursionParentId == null)
    .map((e) => {
     groupedRecursives.filter((gr) => gr[0].split('/')[0] == e.id)
@@ -147,7 +157,7 @@ export default class MainComponent extends Component {
    
    eventsTree = stratify().parentId((d) => d.recursionParentId || d.parentId)(eventsWithRecurssions);
   } else {
-   eventsTree = stratify().parentId((d) => d.recursionParentId || d.parentId)(listOfEvents);
+   eventsTree = stratify().parentId((d) => d.recursionParentId || d.parentId)(backfilledEvents);
   }
  
   var eventsPayload
