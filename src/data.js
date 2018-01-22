@@ -1,24 +1,71 @@
 import moment from 'moment'
 import {scaleOrdinal} from 'd3-scale';
 
-const DbEventsRaw = require("./gDump.json");
+const DbEventsAwong = require("./awong.json");
+const DbEventsEngineering = require("./engineering.json");
 
 export const DbEvents = [
- {id: 0, name: 'life'},
+ {
+  id: 0,
+  name: 'life',
+  formSchema: {
+   title: "",
+   type: "object",
+   "title": "life schema",
+   "description": "life schema description",
+   "properties": {
+         "money": {
+           "type": "number",
+           "title": "wealth in usd",
+           "description": "The money in the bank"
+         }
+   }
+ },
+ 
+ uiFormSchema: {},
+
+ journals: [
+  {id: 0, blob: {
+   money: 111,
+  }, time: moment()},
+  {id: 1, blob: {
+   money: 222,
+  }, time: moment().subtract(0.5, 'hours')}
+ ]
+ 
+},
+ {id: 1, name: 'awong', parentId: 0},
+ {id: 2, name: 'engineering', parentId: 0},
 ].concat(
- DbEventsRaw.items
+ DbEventsAwong.items
  .map((e) => {
   return {
    id: e.id,
-   parentId: 0, name: e.summary,
+   parentId: 1,
+   name: e.summary,
    start: moment(e.start.dateTime || e.start.date), 
    end: moment(e.end.dateTime || e.end.date),
    recursionParentId: e.recurringEventId
   }
  })
-);
+).concat(
 
-console.log(DbEvents)
+ DbEventsEngineering.items
+ .map((e) => {
+  return {
+   id: e.id,
+   parentId: 2,
+   name: e.summary,
+   start: moment(e.start.dateTime || e.start.date), 
+   end: moment(e.end.dateTime || e.end.date),
+   recursionParentId: e.recurringEventId
+  }
+ })
+
+).map((e) => {
+ return {...e, journals: e.journals || [] }
+});
+
 
 // export const DbEvents = [
 // {id: 0, name: 'life'},
@@ -495,30 +542,65 @@ export const tym2OrdinalSorter = (a,b) => {return a.data.id - b.data.id}
 export const tym2OrdinalSorterName = (a,b) => {return a.data.name.localeCompare(b.data.name)}
 export const tym2OrdinalSorterStart = (a,b) => {return a.data.start - b.data.start}
 export const tym2OrdinalSorterPriority = (aEvent, bEvent) => {
- let a = aEvent.data;
- let b = bEvent.data;
-
  const now = moment()
+ 
+ const findPrime = (e) => {
+  let start, end;
 
- const aIsCurrent = (a.start < now && now < a.end) ? 1 : 0
- const bIsCurrent = (b.start < now && now < b.end) ? 1 : 0
+  if (e.data.start && e.data.start){
+   start = e.start
+   end = e.end
+  } else if (e.data.recursions) {
+   let rcs = e.data.recursions
+ 
+   const r = Object.keys(rcs).map((rc) => {
+    return rcs[rc]
+   }).reduce((mm, rcsg) => {
+    return mm.concat(rcsg)
+   }).sort((rc) => {
+    return Math.min(
+     [rc.start, rc.end].map((p) => {
+      return Math.abs(moment() - p)
+     })
+    )
+   })
+ 
+   start = r.start
+   end = r.end
+  } else {
+   start = moment()
+   end = moment()
+  }
+
+  return {start: start, end: end}
+ }
+
+ const a = findPrime(aEvent)
+ const b = findPrime(bEvent)
+ const aStart = a.start;
+ const bStart = b.start;
+ const aEnd = a.end;
+ const bEnd = b.end;
+
+ const aIsCurrent = (aStart < now && now < aEnd) ? 1 : 0
+ const bIsCurrent = (bStart < now && now < bEnd) ? 1 : 0
 
  if (aIsCurrent && !bIsCurrent) {
   return -1
  } else if ( bIsCurrent && !aIsCurrent ) {
   return 1
  } else if ( aIsCurrent && bIsCurrent ) {
-  return a.end - b.end
+  return aEnd - bEnd
 
  } else {
-  const aIsAhead = (a.start > now) ? 1 : 0
-  const bIsAhead = (b.start > now) ? 1 : 0
+  const aIsAhead = (aStart > now) ? 1 : 0
+  const bIsAhead = (bStart > now) ? 1 : 0
 
   if ( aIsAhead !== bIsAhead ) {
    return bIsAhead - aIsAhead
   } else {
-   const aNearestToNow = Math.min(Math.abs(a.start - now), Math.abs(a.end - now))
-   const bNearestToNow = Math.min(Math.abs(b.start - now), Math.abs(b.end - now))
+   const aNearestToNow = Math.min(Math.abs(aStart - now), Math.abs(aEnd - now))
+   const bNearestToNow = Math.min(Math.abs(bStart - now), Math.abs(bEnd - now))
    return aNearestToNow - bNearestToNow 
 
   }

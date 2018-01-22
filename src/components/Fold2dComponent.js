@@ -1,7 +1,6 @@
 import moment from 'moment'
-
-import {svgHeight, svgWidth} from './configs.js'
-import {tym2Time} from './data.js'
+import {svgWidth, svgHeight} from '../configs';
+import {tym2Time} from '../data.js'
 
 const buffer = 0;
 

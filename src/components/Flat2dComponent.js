@@ -1,6 +1,5 @@
 import moment from 'moment'
-
-import {svgHeight, svgWidth} from './configs.js'
+import {svgWidth, svgHeight} from '../configs';
 
 const buffer = 0;
 
@@ -15,31 +14,30 @@ export const Flat2dExpanded = (props) => {
     {
      props.events.map(function(event, ndx){
       const start = event.data.start;
-      const end = event.data.end;
-      const id = event.data.id;
-      const xCoord = start ? xScale(start) : xScale(xScale.domain()[0])
-      const width = end ? xScale(end) - xScale(start) : xScale(xScale.domain()[1])
+      const end   = event.data.end;
+      const id    = event.data.id;
 
       return (
        <g key={ `Flat2dComponent-g-${event.data.id}` }>
         <rect
-         fill="pink"
-         stroke={props.highlighted === id ? 'red' : 'black'}
-         x={xCoord}
-         y={ndx*rowHeight+buffer}
-         height={rowHeight-buffer}
-         width={width}
-         fillOpacity={props.highlighted === id ? 1 : 0.1}
-         onMouseOver={(e) => props.onHighlight(id)} > </rect>
+         fill        = "pink"
+         fillOpacity = { props.highlighted === id ? 1 : 0.1 }
+         height      = { rowHeight }
+         onMouseOver = { (e) => props.onHighlight(id) }
+         stroke      = { props.highlighted === id ? 'red' : 'black' }
+         width       = { end ? xScale(end) - xScale(start) : xScale(xScale.domain()[1]) }
+         x           = { start ? xScale(start) : xScale(xScale.domain()[0]) }
+         y           = { ndx * rowHeight }
+        > </rect>
 
 
         {(event.data.journals || []).map((journal) => {
          return <circle 
-          key={`Flat2dComponent-circle-${journal.id}`}
-          cx={xScale(journal.time)}
-          cy={(ndx*rowHeight)+(rowHeight/2)}
-          r={3}
-          fill="blue"
+          cx   = { xScale(journal.time) }
+          cy   = { (ndx*rowHeight)+(rowHeight/2) }
+          fill = "blue"
+          key  = { `Flat2dComponent-circle-${journal.id}` }
+          r    = { 3 }
          /> })} </g> ) }) }
     <line
      x1={xScale(moment())}

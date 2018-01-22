@@ -1,15 +1,18 @@
 import { Component } from 'react'
-import moment from 'moment'
-import {stratify} from 'd3-hierarchy';
-import Datetime from 'react-datetime';
+import { connect } from 'react-redux'
 import { Flat1dExpanded, Flat1dCondensed } from './Flat1dComponent';
 import { Flat2dExpanded, Flat2dCondensed } from './Flat2dComponent';
 import { Fold1dExpanded, Fold1dCondensed} from './Fold1dComponent';
 import { Fold2dExpanded, Fold2dCondensed} from './Fold2dComponent';
-import { DbEvents, yScale, sorter } from './data.js'
-import {scaleTime} from 'd3-scale';
+import { scaleTime } from 'd3-scale';
+import { stratify } from 'd3-hierarchy';
+import { yScale, sorter } from '../data.js'
+import Datetime from 'react-datetime';
+import moment from 'moment'
 
-export default class MainComponent extends Component {
+import { toJS } from 'immutable';
+
+class MainComponent extends Component {
  
  constructor(props) {
   super(props);
@@ -20,12 +23,10 @@ export default class MainComponent extends Component {
    highlighted: null,
    expandedRecurrences: false,
    filter: {
-    id: null,
-    minTime: DbEvents.reduce((mm,lmnt) => lmnt.end < mm ? lmnt.end : mm, moment()),
-    maxTime: DbEvents.reduce((mm,lmnt) => lmnt.start > mm ? lmnt.start : mm, moment())
-   },
-   schemaEditing: null,
-   DB: DbEvents
+    id: 0,
+    minTime: props.events.reduce((mm,lmnt) => lmnt.end < mm ? lmnt.end : mm, moment()),
+    maxTime: props.events.reduce((mm,lmnt) => lmnt.start > mm ? lmnt.start : mm, moment())
+   }   
   };
  }
 
@@ -44,29 +45,23 @@ export default class MainComponent extends Component {
   }
 
  // fitViewToData = () => {
-  
  //  const descendants = getEvents(this.state).descendants();
-
  //  const computedMinTime = descendants.reduce((mm, lmnt) => {
  //   return Math.min(
  //    lmnt.data.start,
  //    (lmnt.data.journals || []).reduce((mm2, lmnt2) => { return lmnt2.time < mm2 ? mm2 : lmnt2.time }, 0)
  //   ) < mm ? mm : lmnt.data.start
  //  })
-
  //  const computedMaxTime = descendants.reduce((mm, lmnt) => {
  //   return Math.max(
  //    lmnt.data.end,
  //    (lmnt.data.journals || []).reduce((mm2, lmnt2) => { return lmnt2.time > mm2 ? mm2 : lmnt2.time }, 0)
  //   ) > mm ? mm : lmnt.data.end
  //  })
-
  //  return this.setState({ filter: { ...this.state.filter, minTime: computedMinTime, maxTime: computedMaxTime} })
  // }
 
  render() {
-  // console.log(this.state)
-
   const highlighted   = this.state.highlighted;
   const filtered      = this.state.filter.id
   const setHighlight  = this.setHighlight
@@ -111,7 +106,7 @@ export default class MainComponent extends Component {
   const state = this.state;
   const filter = state.filter;
  
-  const listOfEvents = state.DB.filter((e) => {
+  const listOfEvents = this.props.events.filter((e) => {
    if (filter.minTime != null && e.start != null && e.start < filter.minTime){
     return false
    }
@@ -122,7 +117,7 @@ export default class MainComponent extends Component {
  
    return true
   });
- 
+  
   const recurringEvents = listOfEvents.filter((e) => e.recursionParentId != null)
 
   const groupedRecursives = Array.from(
@@ -134,9 +129,9 @@ export default class MainComponent extends Component {
   const backfilledEvents = listOfEvents.concat(
    groupedRecursives.map((gr) => {
     var toReturn = {};//gr[1][1]
-    toReturn.name = gr[1][1].name
-    toReturn.id = gr[1][1].recursionParentId
-    toReturn.parentId = 0
+    toReturn.name = gr[1][0].name
+    toReturn.id = gr[1][0].recursionParentId
+    toReturn.parentId = 1
     return toReturn
    })
   )
@@ -155,8 +150,10 @@ export default class MainComponent extends Component {
     return e;
    })
    
+   // fail
    eventsTree = stratify().parentId((d) => d.recursionParentId || d.parentId)(eventsWithRecurssions);
   } else {
+
    eventsTree = stratify().parentId((d) => d.recursionParentId || d.parentId)(backfilledEvents);
   }
  
@@ -282,3 +279,23 @@ export default class MainComponent extends Component {
  }
 
 }
+
+const mapStateToProps = state => {
+ 
+ return {
+   events : state.get('events').toJS()
+ }
+}
+
+const mapDispatchToProps = dispatch => {
+ return {
+   destroyTodo : () => dispatch({
+     type : 'DESTROY_TODO'
+   })
+ }
+}
+
+export default connect(
+ mapStateToProps,
+ mapDispatchToProps
+)(MainComponent)

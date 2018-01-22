@@ -1,7 +1,6 @@
+import { svgWidth, svgHeight } from '../configs';
 import D1Component from './D1Component';
 import JournalEditor from './JournalEditor';
-import {svgWidth, svgHeight} from './configs';
-
 
 export const Flat1dExpanded = (props) => {
  return(
@@ -11,12 +10,13 @@ export const Flat1dExpanded = (props) => {
      return (
       <li key = { `Flat1dComponent-${lmnt.data.id}` } >
        <D1Component
-        lmnt             = {lmnt.data}
-        onMouseEnter     = {props.onHighlight}
-        highlighted      = {props.highlighted === lmnt.id}
-        onClickEvent     = {props.onEventClick}
-        setSchemaEditing = {props.setSchemaEditing}
-        filtered         = {props.filtered}        
+        filtered         = { props.filtered }
+        highlighted      = { props.highlighted === lmnt.id }
+        lmnt             = { lmnt.data }
+        onClickEvent     = { props.onEventClick }
+        onMouseEnter     = { props.onHighlight }
+        setSchemaEditing = { props.setSchemaEditing }
+        submitJournal    = { props.submitJournal }
        />
       </li>
      )
@@ -37,12 +37,13 @@ export const Flat1dCondensed = (props) => {
      return (
       <li key = { `Flat1dCondensed-${lmnt.data.id}` } >
        <D1Component
-        lmnt             = {lmnt.data}
-        onMouseEnter     = {props.onHighlight}
-        highlighted      = {props.highlighted === lmnt.id}
-        onClickEvent     = {props.onEventClick}
-        setSchemaEditing = {props.setSchemaEditing}
-        filtered         = {props.filtered}        
+        filtered         = { props.filtered }
+        highlighted      = { props.highlighted === lmnt.id }
+        lmnt             = { lmnt.data }
+        onClickEvent     = { props.onEventClick }
+        onMouseEnter     = { props.onHighlight }
+        setSchemaEditing = { props.setSchemaEditing }
+        submitJournal    = { props.submitJournal }    
        />
 
        {lmnt.data.recursions ? <ul> { 
@@ -52,12 +53,13 @@ export const Flat1dCondensed = (props) => {
            <span>{lmnt.data.recursions[recurssionKey].length} X</span>
 
            <D1Component
-            lmnt             = {lmnt.data.recursions[recurssionKey][0]}
-            onMouseEnter     = {props.onHighlight}
-            highlighted      = {props.highlighted === lmnt.id}
-            onClickEvent     = {props.onEventClick}
-            setSchemaEditing = {props.setSchemaEditing}
-            filtered         = {props.filtered}        
+            filtered         = { props.filtered }
+            highlighted      = { props.highlighted === lmnt.id }
+            lmnt             = { lmnt.data.recursions[recurssionKey][0] }
+            onClickEvent     = { props.onEventClick }
+            onMouseEnter     = { props.onHighlight }
+            setSchemaEditing = { props.setSchemaEditing }
+            submitJournal    = { props.submitJournal }     
            />
 
           </li>
