@@ -16,7 +16,6 @@ export default class JournalEditor extends Component {
  }
 
  render () {
-  console.log("rendering journalEditor...")
   const props     = this.props
   const event     = props.event
   const schema    = event.formSchema || todoSchema

@@ -1,47 +1,67 @@
-import moment from 'moment'
 import {svgWidth, svgHeight} from '../configs';
+import {SvgWrapper, SvgJournals} from './SvgWrapper.js'
 import {tym2Time} from '../data.js'
+import moment from 'moment'
 
-const buffer = 0;
+const FoldSvgJournals = (props) => {
+ return (
+  <SvgJournals
+   scale    = { props.scale }
+   y        = { props.y + (props.height / (props.slots * 2)) }
+   r        = { (props.height / (props.slots * 2))/2 }
+   journals = { props.journals || []}
+  />
+ )
+}
 
 function Fold2dExpandedRecursive(props) {
   const node = props.root.data
   const ndx = props.ndx || 0;
   const height = props.height
-  const y = ndx*height+buffer + (props.y || 0);
-  
+  const y = ndx * height + (props.y || 0);
   const xScale = props.xScale.range([0, svgWidth])
   const start = node.start;
   const end = node.end;
-
   const xCoord = start ? xScale(start) : xScale(xScale.domain()[0])
   const width = end ? xScale(end) - xScale(start) : xScale(xScale.domain()[1])
+  const children = props.root.children || []
+  const slots = children.length + 1
+  const id = node.id;
 
   return (
-    <g key={`Fold2dExpandedRecursive-1-${props.root.data.id}`}>
+    <g key={`Fold2dExpandedRecursive-1-${id}`}>
      <rect
-      x={xCoord}
-      width={width}
-      y={y}
-      height={height-buffer}
-      fill="pink"
-      fillOpacity={props.highlight ? 1 : 0.1}
-      stroke={props.highlighted === props.root.data.id ? 'red' : 'black'}
-      onMouseOver={(e) => props.onHighlight(props.root.data.id)}></rect>
+      fill        = "pink"
+      fillOpacity = { props.highlight ? 1 : 0.1 }
+      height      = { height }
+      onMouseOver = { (e) => props.onHighlight(id) }
+      stroke      = { props.highlighted === id ? 'red' : 'black' }
+      width       = { width }
+      x           = { xCoord }
+      y           = { y }
+     ></rect>
 
+<FoldSvgJournals
+    scale    = { xScale }
+    y        = { y }
+    height   = { height }
+    slots    = { slots }
+    journals = { node.journals}
+   />
 
-    <g key={`Fold2dExpandedRecursive-2-${props.root.data.id}`}>{
-     (props.root.children || []).map(function(child, ndx2){
+    <g key={`Fold2dExpandedRecursive-2-${id}`}>{
+     (children || []).map(function(child, ndx2){
       return(
-       <Fold2dExpandedRecursive
-        key={`Fold2dExpandedRecursive-3-${child.data.id}`}
-        root={child}
-        ndx={ndx2}
-        height={(height-buffer) / (props.root.children.length +1 )}
-        highlighted={props.highlighted} highlight={props.highlighted === child.data.id}
-        onHighlight={props.onHighlight}
-        y={y + ((height-buffer) / (props.root.children.length +1 ))}
-        xScale={props.xScale}/>)
+       <Fold2dExpandedRecursive key={`Fold2dExpandedRecursive-3-${child.data.id}`}
+        height      = { height / slots }
+        highlight   = { props.highlighted === child.data.id }
+        highlighted = { props.highlighted }
+        ndx         = { ndx2 }
+        onHighlight = { props.onHighlight }
+        root        = { child }
+        xScale      = { xScale }
+        y           = { y + (height / slots) }
+       />)
      })}
 					</g>
 
@@ -50,30 +70,20 @@ function Fold2dExpandedRecursive(props) {
 }
 
 export const Fold2dExpanded = (props) => {
- const xScale = props.xScale.range([0, svgWidth])
-
 	return (
-		<div>
-			<svg height={svgHeight} width={svgWidth}>
-    
-    <rect x="0" y="0" width={svgWidth} height={svgHeight} fill="lightgray"/>
-	   
-    <Fold2dExpandedRecursive
-     root={props.events}
-     height={svgHeight}
-     highlighted={props.highlighted}
-     onHighlight={props.onHighlight}
-     xScale={props.xScale}/>
-
-    <line
-     y1="0" stroke="red" strokeOpacity="0.5" strokeWidth="3"
-     x1={xScale(moment())} x2={xScale(moment())} y2={svgHeight} />
-    
-    <rect
-     x="0" y="0" stroke="red" strokeWidth="2px" fill="transparent"
-     width={svgWidth} height={svgHeight} />
-			</svg>
-		</div>
+  <SvgWrapper
+   height = { svgHeight }
+   scale  = { props.xScale.range([0, svgWidth])}
+   width  = { svgWidth }
+  >
+   <Fold2dExpandedRecursive
+    height      = { svgHeight }
+    highlighted = { props.highlighted }
+    onHighlight = { props.onHighlight }
+    root        = { props.events }
+    xScale      = { props.xScale }
+   />
+  </SvgWrapper>
 	);
 }
 
@@ -90,101 +100,98 @@ function Fold2dCondensedRecursive(props) {
  const id = props.root.data.id
  const children = props.root.children || []
  const recursions = node.recursions || {}
- const numberOfTypesOfRecusions = Object.keys(recursions).length
- const numberOfRows = numberOfTypesOfRecusions + children.length + 1
- const rowHeight = height / numberOfRows
- const childY = y + rowHeight
+ const rowHeight = height / (Object.keys(recursions).length + children.length + 1)
+ const slots = children.length + 1
 
  return (
   <g key={`Fold2dRecursiveComponent-1-${id}`}>
    <rect
-    x={x} width={width} y={y} height={height}
-    fill="pink"
-    fillOpacity={props.highlight ? 1 : 0.1}
-    stroke={props.highlighted === id ? 'red' : 'black'}
-    onMouseOver={(e) => props.onHighlight(id)}></rect>
+    fill        = "pink"
+    fillOpacity = { props.highlight ? 1 : 0.1 }
+    height      = { height }
+    onMouseOver = { (e) => props.onHighlight(id) }
+    stroke      = { props.highlighted === id ? 'red' : 'black' }
+    width       = { width }
+    x           = { x }
+    y           = { y }
+   ></rect>
 
-   <g key={`Fold2dCondensedRecursive-2-${id}`}>
-    {
-     children.map(function(child, childNdx){
-      const childDataId = child.data.id;
-      
-      return (
-       <g key={`Fold2dCondensedRecursive-3-${childDataId}`} >
-        
-        <Fold2dCondensedRecursive
-         key={`Fold2dCondensedRecursive-4-${childDataId}`}
-         root={child}
-         ndx={childNdx}
-         y={childY}
-         height={rowHeight}
-         highlighted={props.highlighted}
-         highlight={props.highlighted === childDataId}
-         onHighlight={props.onHighlight}
-         xScale={props.xScale}/>
+   <FoldSvgJournals
+    scale    = { xScale }
+    y        = { y }
+    height   = { height }
+    slots    = { slots }
+    journals = { node.journals}
+   />
 
-        </g>
-      )
-     })
-    }
+   {
+    children.map(function(child, childNdx){
+     const childDataId = child.data.id;
+     
+     return (
+      <Fold2dCondensedRecursive key={`Fold2dCondensedRecursive-4-${childDataId}`}
+       height      = { rowHeight }
+       highlight   = { props.highlighted === childDataId }
+       highlighted = { props.highlighted }
+       ndx         = { childNdx }
+       onHighlight = { props.onHighlight }
+       root        = { child }
+       xScale      = { props.xScale }
+       y           = { y + rowHeight }
+      />      
+     )
+    })
+   }
 
-    { 
-     Object.keys(recursions).map((recurssionKey, recurssionKeyNdx) => {
-      const recursionY = rowHeight * (children.length + recurssionKeyNdx+1) + y
-      
-      return (
-       <g key = { `Fold2dCondensedRecursive-5-${recurssionKey}` } >
-        <text>{recurssionKey}</text>
-        {recursions[recurssionKey].map((e, recursionNdx) => {
-         const startRecursion = e.start;
-         const endRecursion = e.end;
-         const xCoordRecursion = (startRecursion ? xScale(startRecursion) : xScale(xScale.domain()[0])) 
-         const widthRecursion = endRecursion ? xScale(endRecursion) - xScale(startRecursion) : xScale(xScale.domain()[1])
+   { 
+    Object.keys(recursions).map((recurssionKey, recurssionKeyNdx) => {
+     
+     return (
+      <g key={`Fold2dCondensedRecursive-5-${recurssionKey}`}>
        
-         return (
-          <rect
-           key = { `Fold2dCondensedRecursive-6-${recurssionKey}-${e.id}` }
-           x={xCoordRecursion} width={widthRecursion} y={recursionY} height={rowHeight}
-           fill="blue" stroke="blue"
-          >
-           <text> {e.id} </text>
-          </rect>
-         )
-        })}
-       </g>
-      )
-     }) 
-    }
+       <text>{recurssionKey}</text>
 
-   </g>
+       {recursions[recurssionKey].map((e, recursionNdx) => {
+        const startRecursion = e.start;
+        const endRecursion = e.end;
+      
+        return (
+         <rect key={ `Fold2dCondensedRecursive-6-${recurssionKey}-${e.id}` }
+          fill   = "blue"
+          height = { rowHeight }
+          stroke = "blue"
+          width  = { endRecursion ? xScale(endRecursion) - xScale(startRecursion) : xScale(xScale.domain()[1]) }
+          x      = { (startRecursion ? xScale(startRecursion) : xScale(xScale.domain()[0]))  }
+          y      = { rowHeight * (children.length + recurssionKeyNdx+1) + y }
+         >
+          <text> {e.id} </text>
+
+         </rect>
+        )
+       })}
+      </g>
+     )
+    }) 
+   }
+   
   </g>
   )
 }
 
 export const Fold2dCondensed = (props) => {
- const xScale = props.xScale.range([0, svgWidth])
-
  return (
-  <div>
-   <svg height={svgHeight} width={svgWidth}>
-    
-    <rect x="0" y="0" width={svgWidth} height={svgHeight} fill="lightgray"/>
-    
-    <Fold2dCondensedRecursive
-     root={props.events}
-     height={svgHeight}
-     highlighted={props.highlighted}
-     onHighlight={props.onHighlight}
-     xScale={props.xScale}/>
-
-    <line
-     y1="0" stroke="red" strokeOpacity="0.5" strokeWidth="3"
-     x1={xScale(moment())} x2={xScale(moment())} y2={svgHeight} />
-    
-    <rect
-     x="0" y="0" stroke="red" strokeWidth="2px" fill="transparent"
-     width={svgWidth} height={svgHeight} />
-   </svg>
-  </div>
+  <SvgWrapper
+   height = { svgHeight }
+   scale  = { props.xScale.range([0, svgWidth]) }
+   width  = { svgWidth }
+  >
+   <Fold2dCondensedRecursive
+    height      = { svgHeight }
+    highlighted = { props.highlighted }
+    onHighlight = { props.onHighlight }
+    root        = { props.events }
+    xScale      = { props.xScale }
+   />
+  </SvgWrapper>  
  );
 }

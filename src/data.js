@@ -36,7 +36,8 @@ export const DbEvents = [
 },
  {id: 1, name: 'awong', parentId: 0},
  {id: 2, name: 'engineering', parentId: 0},
-].concat(
+]
+.concat(
  DbEventsAwong.items
  .map((e) => {
   return {
@@ -61,8 +62,8 @@ export const DbEvents = [
    recursionParentId: e.recurringEventId
   }
  })
-
-).map((e) => {
+)
+.map((e) => {
  return {...e, journals: e.journals || [] }
 });
 
