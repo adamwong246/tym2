@@ -64,7 +64,18 @@ export const DbEvents = [
  })
 )
 .map((e) => {
- return {...e, journals: e.journals || [] }
+ return {
+  ...e,
+  journals: e.journals || Array.from(Array(Math.floor(Math.random() * 100))).map((x, i) => {
+   return {
+    id: i,
+    blob: {
+      money: 111,
+    },
+    time: moment().add((Math.random() * 10000) - 5000, 'hours')
+   }
+  })
+ }
 });
 
 
