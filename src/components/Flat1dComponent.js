@@ -4,7 +4,8 @@ import JournalEditor from './JournalEditor';
 
 export const Flat1dExpanded = (props) => {
  return(
-  <div style={{width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto'}} >
+  // <div style={{width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto'}} >
+  <div>
    <ul>
     { (props.events.map(function(lmnt, ndx){
      return (
@@ -29,9 +30,10 @@ export const Flat1dExpanded = (props) => {
 
 export const Flat1dCondensed = (props) => {
  const events = props.events
- 
+
  return (
-  <div style={{width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto'}} >
+  // <div style={{width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto'}} >
+  <div>
    <ul>
     { events.map(function(lmnt, ndx){
      return (
@@ -43,10 +45,10 @@ export const Flat1dCondensed = (props) => {
         onClickEvent     = { props.onEventClick }
         onMouseEnter     = { props.onHighlight }
         setSchemaEditing = { props.setSchemaEditing }
-        submitJournal    = { props.submitJournal }    
+        submitJournal    = { props.submitJournal }
        />
 
-       {lmnt.data.recursions ? <ul> { 
+       {lmnt.data.recursions ? <ul> {
         Object.keys(lmnt.data.recursions).map((recurssionKey) => {
          return (
           <li key = { `Flat1dCondensed-${recurssionKey}-${lmnt.data.id}` } >
@@ -59,12 +61,12 @@ export const Flat1dCondensed = (props) => {
             onClickEvent     = { props.onEventClick }
             onMouseEnter     = { props.onHighlight }
             setSchemaEditing = { props.setSchemaEditing }
-            submitJournal    = { props.submitJournal }     
+            submitJournal    = { props.submitJournal }
            />
 
           </li>
          )
-        }) 
+        })
        } </ul> : <div> </div> }
 
       </li>

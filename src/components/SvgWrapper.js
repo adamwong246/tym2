@@ -4,11 +4,11 @@ export const SvgWrapper = (props) => {
  const scale = props.scale;
  const height = props.height;
  const width = props.width;
- 
+
  return (
   <svg height={height} width={width}>
    <rect x="0" y="0" width={width} height={height} fill="lightgray"/>
-   
+
    { props.children }
 
    <line
@@ -16,7 +16,10 @@ export const SvgWrapper = (props) => {
      y1="0"
      x2={scale(moment())}
      y2={height}
-     stroke="red" strokeOpacity="0.5" strokeWidth="3" />
+     stroke="white"
+     strokeDasharray="5, 5"
+     strokeOpacity="0.5" strokeWidth="3" />
+
     <rect
      x="0" y="0"
      width={width} height={height}

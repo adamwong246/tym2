@@ -66,11 +66,11 @@ export const DbEvents = [
 .map((e) => {
  return {
   ...e,
-  journals: e.journals || Array.from(Array(Math.floor(Math.random() * 100))).map((x, i) => {
+  journals: e.journals || Array.from(Array(Math.floor(Math.random() * 10))).map((x, i) => {
    return {
     id: i,
     blob: {
-      money: 111,
+      money: Math.random() * 100,
     },
     time: moment().add((Math.random() * 10000) - 5000, 'hours')
    }

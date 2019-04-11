@@ -4,7 +4,7 @@ import {svgWidth, svgHeight} from '../configs';
 
 const Fold1dExpandedRecursive = (props) => {
  return (
-  <div key = { `Fold1dExpandedRecursive-${props.events.data.id}` } > 
+  <div key = { `Fold1dExpandedRecursive-${props.events.data.id}` } >
    <D1Component
     lmnt          = { props.events.data }
     onMouseEnter  = { props.onD1Hover }
@@ -34,9 +34,10 @@ const Fold1dExpandedRecursive = (props) => {
 export const Fold1dExpanded = (props) => {
  const topEvent = props.events;
  return (
-  <div style={
-   {width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto'}
-  }> 
+  // <div style={
+  //  {width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto'}
+  // }>
+  <div>
    <Fold1dExpandedRecursive
     events={props.events}
     onD1Hover={props.onHighlight}
@@ -51,7 +52,7 @@ export const Fold1dExpanded = (props) => {
 
 const Fold1dCondensedRecursive = (props) => {
  return (
-  <div key = { `Fold1dCondensedRecursive-div-${props.events.data.id}` } > 
+  <div key = { `Fold1dCondensedRecursive-div-${props.events.data.id}` } >
    <D1Component
     lmnt         = {props.events.data }
     onMouseEnter = {props.onD1Hover }
@@ -60,8 +61,8 @@ const Fold1dCondensedRecursive = (props) => {
     filtered     = {props.filtered }
     submitJournal = { props.submitJournal }
    />
-   
-   
+
+
    <ul> {
     ( props.events.children || [] ).map( function (lmnt, ndx) {
      return (
@@ -75,7 +76,7 @@ const Fold1dCondensedRecursive = (props) => {
         submitJournal = { props.submitJournal }
        />
 
-      {lmnt.data.recursions ? <ul> { 
+      {lmnt.data.recursions ? <ul> {
         Object.keys(lmnt.data.recursions).map((recurssionKey) => {
          return (
           <li key = { `Flat1dCondensed-${recurssionKey}-${lmnt.data.id}` } >
@@ -87,16 +88,16 @@ const Fold1dCondensedRecursive = (props) => {
             highlighted      = {props.highlighted === lmnt.id}
             onClickEvent     = {props.onEventClick}
             setSchemaEditing = {props.setSchemaEditing}
-            filtered         = {props.filtered}        
+            filtered         = {props.filtered}
             submitJournal = { props.submitJournal }
            />
 
           </li>
          )
-        }) 
+        })
        } </ul> : <div> </div> }
 
-      
+
      </li>)
     })
    }</ul>
@@ -106,7 +107,8 @@ const Fold1dCondensedRecursive = (props) => {
 
 export const Fold1dCondensed = (props) => {
  return (
-  <div style={ { width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto' } }> 
+  // <div style={ { width: `${svgWidth}px`, height: `${svgHeight}px`, overflow: 'auto' } }>
+  <div style={ { overflow: 'auto' } }>
    <Fold1dCondensedRecursive
     events = { props.events }
     onD1Hover     = { props.onHighlight }

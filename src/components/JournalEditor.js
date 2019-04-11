@@ -1,7 +1,7 @@
 import { addJournal } from '../actionsAndReducers.js'
 import { Component } from 'react'
 import { Tab, Tabs } from 'react-bootstrap';
-import {todoSchema, todoUiSchema, todoVisSchema, metaSchema} from '../schemas.js'
+import {todoSchema, todoUiSchema, todoVisSchema, metaSchema, lensSchema} from '../schemas.js'
 import Form from "react-jsonschema-form";
 import moment from 'moment'
 import { toJs } from 'immutable';
@@ -41,6 +41,7 @@ export default class JournalEditor extends Component {
       <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
 
        <Tab eventKey={1} title="form">
+        <span> @ {moment().toString()} </span>
         <Form
          schema   = { schema }
          formData = { formData }
@@ -70,7 +71,13 @@ export default class JournalEditor extends Component {
           </code></pre>
         </Tab>
 
+        {/* <Tab eventKey={6} title='lenses'>
+         <Form
+          schema = { lensSchema } />
+         </Tab> */}
+
       </Tabs>
+      <hr/>
       </div>
     }
    </div>
