@@ -35,7 +35,7 @@
     "d3-axis": "^1.0.8",
     "d3-hierarchy": "^1.1.5",
     "d3-layout-timeline": "^1.0.3",
-    "d3-scale": "^1.0.6",
+    "d3-scale": "^4.0.2",
     "history": "^4.6.1",
     "immutability-helper": "^2.6.4",
     "immutable": "^3.8.2",
