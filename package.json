@@ -10,7 +10,7 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.1",
-    "babel-loader": "^6.4.1",
+    "babel-loader": "^9.1.0",
     "babel-plugin-react": "",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-syntax-object-rest-spread": "^6.13.0",
@@ -25,7 +25,7 @@
     "style-loader": "^0.19.1",
     "url": "^0.11.0",
     "url-loader": "^0.6.2",
-    "webpack": "^2.3.3",
+    "webpack": "^5.74.0",
     "webpack-dev-server": "2.4.2"
   },
   "dependencies": {
